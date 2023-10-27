@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>배터리와 알람 기능이 있는 디지털 시계</title>
+        <link rel ="stylesheet" href = "style.css">
+    </head>
+    <body>
+        <div id="clock">00:00:00</div>
+        <div id="battery">Battery: 100%</div>
+        <br>
+        <form id="alarmForm">
+            <input type="number" min="0" max="23" id="hour" placeholder="Hour">
+            <input type="number" min="0" max="59" id="minute" placeholder="Minute">
+            <input type="number" min="0" max="59" id="second" placeholder="Second">
+            <button type="button" id="addAlarm">Add Alarm</button>
+        </form>
+        <br>
+        <div id="alarmlist">Alarms: </div>
+        <script>
+            const clockElem = document.getElementById('clock');
+            const batteryElem = document.getElementById('battery');
+            const addAlarmbutton = document.getElementById('addAlarm');
+            const alarmListElem = document.getElementById('alarmList');
+
+            let batteryPercentage = 100;
+            let alarms = [];
+
+
+            function updateClock() {
+                if (batteryPercentage <= 0){
+                    clockElem.innerHTML = "";
+                    clockElem.style.backgroundColor = "black";
+                    return;
+                }
+
+                const now = new Date();
+                const hours = String(now.getHours()).padStart(2, '0');
+                const minutes = String(now.getMinutes()).padStart(2, '0');
+                const seconds = String(now.getSeconds()).padStart(2, '0');
+                const currentTime = '${hours}:${minutes}:${seconds}';
+
+                checkAlarms(currentTime);
+                clockElem.innerHTML = currentTime;
+            }
+
+            function updateBattery() {
+                if (batteryPercentage > 0) {
+                    batteryPercentage -= 1;
+                    batteryElem.innerHTML = 'Battery: ${batteryPercentage}%'
+                }
+            }
+
+            function addAlarm() {
+                const hour = document.getElementById('hour').value.padStart(2,'0');
+                const minute = document.getElementById('minute').value.padStart(2,'0');
+                const second = document.getElementById('second').value.padStart(2,'0');
+                const alarm = '${hour}:${minute}:${second}';
+
+                if (alarms.length <3){
+                    alarms.push(alarm);
+                    updateAlarmList();
+                } else {
+                    alert('You can only set up to 3 alarms. ');
+                }
+            }
+            function updateAlarmList() {
+                alarmListElem.innerHTML = 'Alarms: ' + alarms.join(', ');
+            }
+
+            function checkAlarms(currentTime) {
+                alarms.forEach((alarm, index) => {
+                    if (currentTime == alarm) {
+                        alert('ALRAM: ' + alarm);
+                        alarms.splice(index, 1);
+                        updateAlarmList();
+                    }
+                });
+            }
+
+            addAlarmbutton.addEventListener('click', addAlarm);
+            
+            setInterval(() => {
+                updateClock();
+                updateBattery();
+            }, 1000);
+            </script>
+    </body>
+</html>
