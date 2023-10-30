@@ -17,7 +17,7 @@ function updateClock() {
     const hours = String(now.getHours()).padStart(2, '0');
     const minutes = String(now.getMinutes()).padStart(2, '0');
     const seconds = String(now.getSeconds()).padStart(2, '0');
-    const currentTime = '${hours}:${minutes}:${seconds}';
+    const currentTime = `${hours}:${minutes}:${seconds}`;
 
     checkAlarms(currentTime);
     clockElem.innerHTML = currentTime;
@@ -26,15 +26,15 @@ function updateClock() {
 function updateBattery() {
     if (batteryPercentage > 0) {
         batteryPercentage -= 1;
-        batteryElem.innerHTML = 'Battery: ${batteryPercentage}%'
-    }
+        batteryElem.innerHTML = `Battery: ${batteryPercentage}%`;
+        }
 }
 
 function addAlarm() {
     const hour = document.getElementById('hour').value.padStart(2,'0');
     const minute = document.getElementById('minute').value.padStart(2,'0');
     const second = document.getElementById('second').value.padStart(2,'0');
-    const alarm = '${hour}:${minute}:${second}';
+    const alarm = `${hour}:${minute}:${second}`;
 
     if (alarms.length < 3){
         alarms.push(alarm);
